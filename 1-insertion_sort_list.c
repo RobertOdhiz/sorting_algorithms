@@ -1,55 +1,45 @@
 #include "sort.h"
 
 /**
-  * insertion_sort_list - Sorts a doubly linked list of integers in ascending order using Insertion sort algorithm
+  * insertion_sort_list - Sorts a doubly linked list of integers in ascending
+  * order using Insertion sort algorithm
+  *
   * @list: Pointer to the list being sorted
+  * Return: Nothing
   */
 
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *sorted = NULL, *curr = *list, *temp = NULL;
-	listint_t *curr_sorted = NULL;
+	listint_t *curr = NULL, *temp = *list;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
+	if (*list == NULL || temp->next == NULL)
 		return;
 
-	while (curr != NULL)
+	while (temp->next)
 	{
-		temp = curr->next;
-		if (sorted == NULL || sorted->n >= curr->n)
+		if (temp->next->n < temp->n)
 		{
-			curr->next = sorted;
-			curr->prev = NULL;
-			/**
-			  * if (sorted != NULL)
-			  *	sorted->prev = curr
-			  */
-			sorted = curr; 
-			print_list(*list);
+			curr = temp;
+			temp = temp->next;
+			/*swap */
+			temp->prev = curr->prev;
+			if (curr->prev)
+				curr->prev->next = temp;
+			else
+				*list = temp;
+			curr->next = temp->next;
+			if (temp->next)
+				temp->next->prev = curr;
+			temp->next = curr;
+			curr->prev = temp;
+			print_list(*list); /*print list*/
+			if (temp->prev && temp->n < temp->prev->n)
+				temp = temp->prev;
+			else
+				temp = temp->next;
+
 		}
 		else
-		{
-			curr_sorted = sorted;
-			while (curr_sorted->next != NULL && curr_sorted->next->n < curr->n)
-			{
-				curr_sorted = curr_sorted->next;
-			}
-			curr->next = curr_sorted->next;
-			if (curr_sorted->next != NULL)
-				curr_sorted->next->prev = curr;
-
-			curr_sorted->next = curr;
-			curr->prev = curr_sorted;
-			print_list(*list);
-		}
-		/**
-		  * if (curr->prev == NULL)
-		  *	*list = curr;
-		  */
-
-		curr = temp;
+			temp = temp->next;
 	}
-
-	*list = sorted;
-
 }
