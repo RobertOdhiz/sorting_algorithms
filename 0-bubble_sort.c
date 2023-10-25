@@ -32,11 +32,11 @@ void bubble_sort(int *array, size_t size)
   * swap - Swaps an element with another
   * @first: Reference Element
   * @last: ELement swapped with first
-  */
+  *
 void swap(int *first, int *last)
 {
 	int temp = *first;
 
 	*first = *last;
 	*last = temp;
-}
+}/
