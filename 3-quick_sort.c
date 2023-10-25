@@ -5,31 +5,69 @@
  *
  * @array: array to sort
  * @size: array size
- * Return: Nothing
+ * Return: Notubng
  */
 void quick_sort(int *array, size_t size)
 {
-	int temp, pivot = array[size - 1], tag = -1;
-	size_t i;
-
-	if (size < 2)
+	if (array == NULL || size < 2)
 		return;
 
-	for (i = 0; i < size; i++)
+	quick_s(array, 0, size - 1, size);
+}
+
+/**
+  * partition - Partitions the array into sub arrays
+  * @array: Array being partitioned
+  * @lb: Lowerbound of the array
+  * @ub: Upperbound of the array
+  * @size: Size of the array
+  * Return: An integer that stores the point of partition
+  */
+
+int partition(int *array, int lb, int ub, size_t size)
+{
+	int i = lb - 1, j = lb;
+	int pivot = array[ub], tmp = 0;
+
+	for (; j < ub; j++)
 	{
-		if (array[i] > pivot)
+		if (array[j] < pivot)
 		{
-			tag = i;
-		}
-		if (array[i] < pivot && tag != -1)
-		{
-			temp = array[i];
-			array[i] = array[tag];
-			array[tag] = temp;
-			tag = i;
-			print_array(array, size);
+			i++;
+			if (array[i] != array[j])
+			{
+				tmp = array[i];
+				array[i] = array[j];
+				array[j] = tmp;
+				print_array(array, size);
+			}
 		}
 	}
-	quick_sort(array, tag);
-	quick_sort(array + tag + 1, size - tag - 1);
+	if (array[i + 1] != array[ub])
+	{
+		tmp = array[i + 1];
+		array[i + 1] = array[ub];
+		array[ub] = tmp;
+		print_array(array, size);
+	}
+	return (i + 1);
+}
+/**
+ * quick_s - quick sort
+ * @array: given array
+ * @lb: lbwer
+ * @ub:ubgher
+ * @size: array's size
+ * Return: void
+ */
+void quick_s(int *array, int lb, int ub, size_t size)
+{
+	int pivot;
+
+	if (lb < ub)
+	{
+		pivot = partition(array, lb, ub, size);
+		quick_s(array, lb, pivot - 1, size);
+		quick_s(array, pivot + 1, ub, size);
+	}
 }
